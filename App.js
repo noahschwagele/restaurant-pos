@@ -11,7 +11,7 @@ const AppContent = () => {
     return (
         <PaperProvider theme={paperTheme}>
             <NavigationContainer theme={navTheme}>
-                <StatusBar />
+                <StatusBar hidden/>
                 <MainNav />
             </NavigationContainer>
         </PaperProvider>

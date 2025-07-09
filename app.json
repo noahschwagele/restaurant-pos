@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "base-app",
-    "slug": "base-app",
+    "name": "Restaurant Pos",
+    "slug": "restaurant-pos",
     "version": "1.0.0",
     "orientation": "both",
     "icon": "./assets/icon.png",
@@ -11,12 +11,7 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
-        }
-      ]
+      
     ],
     "assetBundlePatterns": [
       "**/*"

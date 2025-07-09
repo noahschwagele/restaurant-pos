@@ -11,7 +11,7 @@ import HomeScreen from '../screens/HomeStack/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
-const HomeStack = ({ navigation, route }) => {
+const PaymentStack = ({ navigation, route }) => {
   const { userToken, userDetails, userRole, logout } = route.params;
   const theme = useTheme();
   return (
@@ -34,4 +34,4 @@ const HomeStack = ({ navigation, route }) => {
   );
 }
 
-export default HomeStack;
+export default PaymentStack;

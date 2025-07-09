@@ -5,18 +5,20 @@ import { Image } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from '../screens/HomeStack/HomeScreen';
+import SettingLandingScreen from '../screens/SettingStack/SettingLandingScreen';
+import PrinterConfigScreen from '../screens/SettingStack/PrinterConfigScreen';
 
 
 
 
 const Stack = createNativeStackNavigator();
 
-const HomeStack = ({ navigation, route }) => {
+const SettingStack = ({ navigation, route }) => {
   const { userToken, userDetails, userRole, logout } = route.params;
   const theme = useTheme();
   return (
     <Stack.Navigator
-      initialRouteName='HomeScreen'
+      initialRouteName='PrinterConfigScreen'
       screenOptions={{
         headerTitleStyle: {
           fontWeight: 'bold',
@@ -24,14 +26,20 @@ const HomeStack = ({ navigation, route }) => {
         headerBackTitleStyle: {backgroundColor: theme.colors.onSurface}
       }}
     >
-      <Stack.Screen 
-        name="HomeScreen" 
-        component={HomeScreen} 
+      {/* <Stack.Screen 
+        name="SettingLandingScreen" 
+        component={SettingLandingScreen} 
         options={{ headerShown: false, title: 'Home' }} 
+        initialParams={{ userToken, userDetails, logout }}
+        /> */}
+      <Stack.Screen 
+        name="PrinterConfigScreen" 
+        component={PrinterConfigScreen} 
+        options={{ headerShown: false, title: 'Prep Stations configuration' }} 
         initialParams={{ userToken, userDetails, logout }}
         />
     </Stack.Navigator>
   );
 }
 
-export default HomeStack;
+export default SettingStack;

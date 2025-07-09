@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation, route }) => {
       <View style={[styles.background, {backgroundColor: theme.colors.primary}]} >
       {/* <Image source={require('../../assets/icon.png')} style={styles.logo} /> */}
         {/* <View style={[styles.logoBorder, {borderColor: theme.colors.surface}]}> */}
-          <Text style={[styles.logotext, {color: theme.colors.surface}]}>BASE APP</Text>
+          <Text style={[styles.logotext, {color: theme.colors.surface}]}>POS</Text>
         {/* </View> */}
         
       </View>
