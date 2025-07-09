@@ -45,7 +45,7 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         component={HomeStack}
         initialParams={{ userToken, userDetails, logout }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="TableMap"
         component={TableMapStack}
         initialParams={{ userToken, userDetails, logout }}
@@ -74,7 +74,7 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         name="Reports"
         component={ReportStack}
         initialParams={{ userToken, userDetails, logout }}
-      />
+      /> */}
       <Drawer.Screen
         name="Settings"
         component={SettingLandingScreen}
