@@ -27,10 +27,10 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         headerShown: false,
         drawerType: 'permanent',
         drawerStyle: {
-          width: 240,
-          backgroundColor: theme.colors.neutral200,
+          width: 200,
+          backgroundColor: theme.colors.neutral100,
         },
-        drawerActiveBackgroundColor: theme.colors.neutral300,
+        drawerActiveBackgroundColor: theme.colors.neutral200,
         drawerActiveTintColor: theme.colors.neutral900,
         drawerInactiveTintColor: theme.colors.neutral700,
         drawerItemStyle: {
@@ -45,7 +45,7 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         component={HomeStack}
         initialParams={{ userToken, userDetails, logout }}
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="TableMap"
         component={TableMapStack}
         initialParams={{ userToken, userDetails, logout }}
@@ -74,7 +74,7 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         name="Reports"
         component={ReportStack}
         initialParams={{ userToken, userDetails, logout }}
-      /> */}
+      />
       <Drawer.Screen
         name="Settings"
         component={SettingLandingScreen}
@@ -89,8 +89,9 @@ function CustomDrawerContent({ navigation, state, descriptors, theme }) {
     <DrawerContentScrollView
       contentContainerStyle={{
         flex: 1,
+        // height: '100%',
         justifyContent: 'center',
-        backgroundColor: theme.colors.neutral50,
+        backgroundColor: 'white',
         // paddingVertical: 20,
       }}
     >
@@ -110,14 +111,14 @@ function CustomDrawerContent({ navigation, state, descriptors, theme }) {
               >
                 <MaterialCommunityIcons
                   name={getIconName(route.name)}
-                  size={24}
+                  size={18}
                   color={isFocused ? theme.colors.neutral900 : theme.colors.neutral600}
                   style={{ marginRight: 12 }}
                 />
                 <Text
                   style={{
                     color: isFocused ? theme.colors.neutral900 : theme.colors.neutral700,
-                    fontSize: 16,
+                    fontSize: 14,
                   }}
                 >
                   {route.name}
@@ -125,7 +126,7 @@ function CustomDrawerContent({ navigation, state, descriptors, theme }) {
               </View>
             )}
             focused={isFocused}
-            activeBackgroundColor={theme.colors.neutral100}
+            activeBackgroundColor={theme.colors.neutral50}
             inactiveTintColor={theme.colors.neutral700}
             activeTintColor={theme.colors.neutral900}
             onPress={() => navigation.navigate(route.name)}
