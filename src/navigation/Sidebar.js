@@ -22,8 +22,11 @@ export default function Sidebar({ userToken, userDetails, logout }) {
 
   return (
     <Drawer.Navigator
+     defaultStatus="open"
       initialRouteName="Settings"
+      
       screenOptions={{
+        
         headerShown: false,
         drawerType: 'permanent',
         drawerStyle: {
@@ -94,12 +97,14 @@ function CustomDrawerContent({ navigation, state, descriptors, theme }) {
         backgroundColor: 'white',
         // paddingVertical: 20,
       }}
+      
     >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
 
         return (
           <DrawerItem
+        
             key={route.key}
             label={() => (
               <View

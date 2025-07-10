@@ -36,7 +36,13 @@ const App = () => {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator 
+    
+    screenOptions={{ 
+      headerShown: false ,
+      animation: 'slide_from_right'
+    }}
+    >
       {userToken == null ? (
         <Stack.Screen
           name="Login"

@@ -32,6 +32,7 @@ const PrinterConfigScreen = ({ navigation }) => {
                 <Modal 
                     visible={modalVisible} 
                     onDismiss={hideModal}
+                    dismissable={false}
                     style={{alignItems: 'center'}}
                     >
                     <View
@@ -54,12 +55,14 @@ const PrinterConfigScreen = ({ navigation }) => {
                             </View>
                             <IconButton icon={'close'} onPress={hideModal}/>
                         </View>
+                        <Text>Station name</Text>
                         <TextInput
                             // label="Station name"
                             placeholder="Enter station name"
                             mode="outlined"
                             style={{marginBottom: 16}}
                         />
+                        <Text>Description</Text>
                         <TextInput
                             // label="Description"
                             placeholder="Enter station description"
