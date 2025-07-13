@@ -1,47 +1,70 @@
-import * as React from 'react';
-import {  View } from 'react-native';
-import { Text,useTheme } from 'react-native-paper';
+import React, { use } from 'react';
+import { Dimensions, View } from 'react-native';
+import { IconButton, Text, useTheme } from 'react-native-paper';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 // Import stacks
 import HomeStack from './HomeStack';
-import TableMapStack from './TableMapStack';
-import MenuListStack from './MenuListStack';
-import OrderStack from './OrderStack';
 import PaymentStack from './PaymentStack';
 import EmployeeStack from './EmployeeStack';
 import ReportStack from './ReportStack';
-import SettingStack from './SettingStack';
+import SaleStack from './SaleStack';
 import SettingLandingScreen from '../screens/SettingStack/SettingLandingScreen';
+import SaleListScreen from '../screens/SaleStack/SaleListScreen';
 
 const Drawer = createDrawerNavigator();
 
 export default function Sidebar({ userToken, userDetails, logout }) {
   const theme = useTheme();
+  const [isPermanent, setIsPermanent] = React.useState(true); // manually toggle permanent drawer
+  const { width } = Dimensions.get('screen');
+  const navigation = useNavigation();
+
+  React.useEffect(() => {
+    // Automatically set permanent drawer for wide screens
+    console.log('Screen width:', width);
+    setIsPermanent(width >= 1280); // Set permanent if width > 1000
+  }, [width, navigation]);
 
   return (
     <Drawer.Navigator
-     defaultStatus="open"
-      initialRouteName="Settings"
-      
-      screenOptions={{
-        
-        headerShown: false,
-        drawerType: 'permanent',
+      defaultStatus={isPermanent ? "open" : 'closed'}
+      initialRouteName="Home"
+      screenOptions={({ navigation }) => ({
+        headerShown: true,
+        drawerType: isPermanent ? 'permanent' : 'slide', // toggle permanent vs slide
         drawerStyle: {
-          width: 200,
-          backgroundColor: theme.colors.neutral100,
+          backgroundColor: theme.colors.neutral00,
+          
+          width: isPermanent ? 240 : 240,
         },
+        headerStyle: {
+          backgroundColor: theme.colors.neutral00,
+          shadowColor: 'transparent',
+          borderRadius: isPermanent && 15,
+        },
+        headerLeft: () =>
+          !isPermanent ? ( // Show menu icon only if drawer isn't permanent
+            <IconButton
+              icon="menu"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+              accessibilityLabel="Open navigation drawer"
+            />
+          ) : null,
         drawerActiveBackgroundColor: theme.colors.neutral200,
         drawerActiveTintColor: theme.colors.neutral900,
         drawerInactiveTintColor: theme.colors.neutral700,
         drawerItemStyle: {
           borderRadius: 100,
           marginVertical: 4,
-        }
-      }}
-      drawerContent={(props) => <CustomDrawerContent {...props} theme={theme} />}
+        },
+      })}
+      drawerContent={(props) => (
+        <CustomDrawerContent {...props} theme={theme} isPermanent={isPermanent}/>
+      )}
     >
       <Drawer.Screen
         name="Home"
@@ -49,18 +72,8 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         initialParams={{ userToken, userDetails, logout }}
       />
       <Drawer.Screen
-        name="TableMap"
-        component={TableMapStack}
-        initialParams={{ userToken, userDetails, logout }}
-      />
-      <Drawer.Screen
-        name="MenuList"
-        component={MenuListStack}
-        initialParams={{ userToken, userDetails, logout }}
-      />
-      <Drawer.Screen
-        name="Orders"
-        component={OrderStack}
+        name="Sales"
+        component={SaleListScreen}
         initialParams={{ userToken, userDetails, logout }}
       />
       <Drawer.Screen
@@ -87,24 +100,24 @@ export default function Sidebar({ userToken, userDetails, logout }) {
   );
 }
 
-function CustomDrawerContent({ navigation, state, descriptors, theme }) {
+function CustomDrawerContent({ navigation, state, theme, isPermanent }) {
   return (
     <DrawerContentScrollView
       contentContainerStyle={{
         flex: 1,
-        // height: '100%',
-        justifyContent: 'center',
+        height: '100%',
+        justifyContent: isPermanent ? 'center' : 'flex-start',
         backgroundColor: 'white',
-        // paddingVertical: 20,
+        margin: 10,
+        borderRadius: 20,
+        
       }}
-      
     >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
 
         return (
           <DrawerItem
-        
             key={route.key}
             label={() => (
               <View
@@ -117,12 +130,18 @@ function CustomDrawerContent({ navigation, state, descriptors, theme }) {
                 <MaterialCommunityIcons
                   name={getIconName(route.name)}
                   size={18}
-                  color={isFocused ? theme.colors.neutral900 : theme.colors.neutral600}
+                  color={
+                    isFocused
+                      ? theme.colors.neutral900
+                      : theme.colors.neutral600
+                  }
                   style={{ marginRight: 12 }}
                 />
                 <Text
                   style={{
-                    color: isFocused ? theme.colors.neutral900 : theme.colors.neutral700,
+                    color: isFocused
+                      ? theme.colors.neutral900
+                      : theme.colors.neutral700,
                     fontSize: 14,
                   }}
                 >
@@ -139,9 +158,9 @@ function CustomDrawerContent({ navigation, state, descriptors, theme }) {
               borderRadius: 1000,
               marginVertical: 4,
               borderWidth: isFocused ? 1 : 0,
-              borderColor: isFocused ? theme.colors.neutral300 : 'transparent',
-              // justifyContent: 'center',
-              // alignItems: 'center',
+              borderColor: isFocused
+                ? theme.colors.neutral300
+                : 'transparent',
             }}
           />
         );
@@ -154,12 +173,8 @@ function getIconName(routeName) {
   switch (routeName) {
     case 'Home':
       return 'home';
-    case 'TableMap':
-      return 'table';
-    case 'MenuList':
-      return 'menu';
-    case 'Orders':
-      return 'bell';
+    case 'Sales':
+      return 'cart';
     case 'Payments':
       return 'cash';
     case 'Employees':

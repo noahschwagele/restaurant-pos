@@ -3,22 +3,21 @@ import * as React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Image } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SaleListScreen from '../screens/SaleStack/SaleListScreen';
+import SaleProductScreen from '../screens/SaleStack/SaleProductScreen';
 
-import HomeScreen from '../screens/HomeStack/HomeScreen';
-import SettingLandingScreen from '../screens/SettingStack/SettingLandingScreen';
-import PrinterConfigScreen from '../screens/SettingStack/PrinterConfigScreen';
 
 
 
 
 const Stack = createNativeStackNavigator();
 
-const SettingStack = ({ navigation, route }) => {
+const SaleStack = ({ navigation, route }) => {
   const { userToken, userDetails, userRole, logout } = route.params;
   const theme = useTheme();
   return (
     <Stack.Navigator
-      initialRouteName='PrinterConfigScreen'
+      initialRouteName='SaleProductScreen'
       screenOptions={{
         headerTitleStyle: {
           fontWeight: 'bold',
@@ -27,19 +26,19 @@ const SettingStack = ({ navigation, route }) => {
       }}
     >
       {/* <Stack.Screen 
-        name="SettingLandingScreen" 
-        component={SettingLandingScreen} 
-        options={{ headerShown: false, title: 'Home' }} 
+        name="SaleListScreen" 
+        component={SaleListScreen} 
+        options={{ headerShown: false, title: 'Sales' }} 
         initialParams={{ userToken, userDetails, logout }}
         /> */}
       <Stack.Screen 
-        name="PrinterConfigScreen" 
-        component={PrinterConfigScreen} 
-        options={{ headerShown: true, title: 'Prep Stations configuration' }} 
+        name="SaleProductScreen" 
+        component={SaleProductScreen} 
+        options={{ headerShown: true, title: 'Products' }} 
         initialParams={{ userToken, userDetails, logout }}
         />
     </Stack.Navigator>
   );
 }
 
-export default SettingStack;
+export default SaleStack;

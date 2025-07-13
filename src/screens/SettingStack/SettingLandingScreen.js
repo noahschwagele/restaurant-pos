@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { Text, Card, Button, Icon, Title } from 'react-native-paper'; // Importing Button as it was in the original snippet, though not used in the final UI
+import ThemeSelector from '../../components/ThemeSelector';
 
 const SettingLandingScreen = ({ navigation, route }) => {
   // The 'logout' prop from route.params was in your original snippet but not used for UI,
@@ -53,7 +54,7 @@ const SettingCard = ({ item }) => (
 
   return (
     <ScrollView style={styles.scrollViewContainer}>
-        <Title style={{marginBottom: 16, fontWeight: '800'}} >Settings</Title>
+      <ThemeSelector/>
       <View style={styles.cardsContainer}>
         {items.map((item, idx) => (
           <SettingCard key={idx} item={item} />
@@ -66,7 +67,6 @@ const SettingCard = ({ item }) => (
 const styles = StyleSheet.create({
   scrollViewContainer: {
     flex: 1,
-    backgroundColor: '#F3F4F6', // Light gray background to match the image
     padding: 16, // Padding around the content
   },
   cardsContainer: {

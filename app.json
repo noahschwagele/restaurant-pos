@@ -3,7 +3,7 @@
     "name": "Restaurant Pos",
     "slug": "restaurant-pos",
     "version": "1.0.0",
-    "orientation": "landscape",
+    "orientation": "both",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -11,13 +11,19 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
-      
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ]
     ],
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {

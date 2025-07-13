@@ -6,6 +6,8 @@ import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
 import Sidebar from './Sidebar';
 import PrinterConfigScreen from '../screens/SettingStack/PrinterConfigScreen';
+import SaleStack from './SaleStack';
+import SaleProductScreen from '../screens/SaleStack/SaleProductScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +42,6 @@ const App = () => {
     
     screenOptions={{ 
       headerShown: false ,
-      animation: 'slide_from_right'
     }}
     >
       {userToken == null ? (
@@ -59,6 +60,11 @@ const App = () => {
       <Stack.Screen
         name="PrinterConfigScreen"
         component={PrinterConfigScreen}
+        initialParams={{ userToken, userDetails, logout }}
+      />
+      <Stack.Screen
+        name="SaleStack"
+        component={SaleStack}
         initialParams={{ userToken, userDetails, logout }}
       />
     </Stack.Navigator>
