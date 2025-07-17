@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React from 'react';
 import { Dimensions, View } from 'react-native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
@@ -19,35 +19,56 @@ const Drawer = createDrawerNavigator();
 
 export default function Sidebar({ userToken, userDetails, logout }) {
   const theme = useTheme();
-  const [isPermanent, setIsPermanent] = React.useState(true); // manually toggle permanent drawer
+  const [isPermanent, setIsPermanent] = React.useState(true);
+  const [orientation, setOrientation] = React.useState('portrait');
   const { width } = Dimensions.get('screen');
   const navigation = useNavigation();
 
   React.useEffect(() => {
-    // Automatically set permanent drawer for wide screens
-    console.log('Screen width:', width);
-    setIsPermanent(width >= 1280); // Set permanent if width > 1000
-  }, [width, navigation]);
+    const updateOrientation = async () => {
+      const currentOrientation = await ScreenOrientation.getOrientationAsync();
+      const isLandscape =
+        currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
+        currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
+
+      setOrientation(isLandscape ? 'landscape' : 'portrait');
+
+      // Adjust permanent drawer based on width and orientation
+      setIsPermanent(width >= 1024 && isLandscape);
+    };
+
+    // Initial check
+    updateOrientation();
+
+    // Listen for orientation changes
+    const subscription = ScreenOrientation.addOrientationChangeListener(() => {
+      updateOrientation();
+    });
+
+    // Clean up listener
+    return () => {
+      ScreenOrientation.removeOrientationChangeListener(subscription);
+    };
+  }, [width]);
 
   return (
     <Drawer.Navigator
-      defaultStatus={isPermanent ? "open" : 'closed'}
+      defaultStatus={isPermanent ? 'open' : 'closed'}
       initialRouteName="Home"
       screenOptions={({ navigation }) => ({
         headerShown: true,
-        drawerType: isPermanent ? 'permanent' : 'slide', // toggle permanent vs slide
+        drawerType: isPermanent ? 'permanent' : 'slide',
         drawerStyle: {
           backgroundColor: theme.colors.neutral00,
-          
-          width: isPermanent ? 240 : 240,
+          width: 240,
         },
         headerStyle: {
           backgroundColor: theme.colors.neutral00,
           shadowColor: 'transparent',
-          borderRadius: isPermanent && 15,
+          borderRadius: isPermanent ? 15 : 0,
         },
         headerLeft: () =>
-          !isPermanent ? ( // Show menu icon only if drawer isn't permanent
+          !isPermanent ? (
             <IconButton
               icon="menu"
               onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -63,7 +84,7 @@ export default function Sidebar({ userToken, userDetails, logout }) {
         },
       })}
       drawerContent={(props) => (
-        <CustomDrawerContent {...props} theme={theme} isPermanent={isPermanent}/>
+        <CustomDrawerContent {...props} theme={theme} isPermanent={isPermanent} />
       )}
     >
       <Drawer.Screen
@@ -110,7 +131,6 @@ function CustomDrawerContent({ navigation, state, theme, isPermanent }) {
         backgroundColor: 'white',
         margin: 10,
         borderRadius: 20,
-        
       }}
     >
       {state.routes.map((route, index) => {
@@ -131,9 +151,7 @@ function CustomDrawerContent({ navigation, state, theme, isPermanent }) {
                   name={getIconName(route.name)}
                   size={18}
                   color={
-                    isFocused
-                      ? theme.colors.neutral900
-                      : theme.colors.neutral600
+                    isFocused ? theme.colors.neutral900 : theme.colors.neutral600
                   }
                   style={{ marginRight: 12 }}
                 />
@@ -158,9 +176,7 @@ function CustomDrawerContent({ navigation, state, theme, isPermanent }) {
               borderRadius: 1000,
               marginVertical: 4,
               borderWidth: isFocused ? 1 : 0,
-              borderColor: isFocused
-                ? theme.colors.neutral300
-                : 'transparent',
+              borderColor: isFocused ? theme.colors.neutral300 : 'transparent',
             }}
           />
         );
